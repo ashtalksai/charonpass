@@ -20,30 +20,27 @@ test.describe("Auth Flow", () => {
 
   test("auth session endpoint returns non-500", async ({ page }) => {
     const response = await page.goto("/api/auth/session")
-    // Should not be 500 — currently FAILING (server misconfiguration)
     expect(response?.status()).not.toBe(500)
+    expect(response?.status()).toBe(200)
   })
 
   test("signup with new account succeeds", async ({ page }) => {
-    // Currently FAILING due to auth server error
     await page.goto("/signup")
-    await page.locator("input[placeholder*='Alex Thompson'], input[name=name]").fill("QA Tester")
-    await page.locator("input[type=email], input[placeholder*=email]").fill("qa-test-charonpass@sharklasers.com")
+    await page.locator("input[placeholder*='Alex Thompson'], input[name=name]").fill("QA Tester E2E")
+    await page.locator("input[type=email], input[placeholder*=email]").fill(`qa-e2e-${Date.now()}@sharklasers.com`)
     await page.locator("input[type=password], input[placeholder*='Min']").fill("TestPass123!")
     await page.getByRole("button", { name: /Create Account/i }).click()
-    // Should redirect to dashboard, not show server error
-    await expect(page).not.toHaveURL(/signup/)
-    await expect(page.locator("h1:has-text('Server error')")).not.toBeVisible()
+    // Should redirect to dashboard
+    await expect(page).toHaveURL(/dashboard/, { timeout: 10000 })
+    await expect(page.getByRole("heading", { name: /Welcome back/i })).toBeVisible()
   })
 
   test("login with demo account succeeds", async ({ page }) => {
-    // Currently FAILING due to auth server error
     await page.goto("/login")
     await page.locator("input[type=email], input[placeholder*=email]").fill("alex@example.com")
     await page.locator("input[type=password], input[placeholder*='••']").fill("demo1234")
     await page.getByRole("button", { name: /Sign In/i }).click()
-    // Should redirect to dashboard, not show server error
-    await expect(page).not.toHaveURL(/login/)
-    await expect(page.locator("h1:has-text('Server error')")).not.toBeVisible()
+    // Should redirect to dashboard
+    await expect(page).not.toHaveURL(/login/, { timeout: 10000 })
   })
 })
