@@ -23,14 +23,33 @@ const dmMono = DM_Mono({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://charonpass.ashketing.com"),
   title: "CharonPass — Your digital estate, safely delivered.",
   description:
     "CharonPass guides your loved ones through accessing your digital assets after you're gone — without ever touching your private keys.",
   keywords: ["crypto inheritance", "digital estate", "dead man's switch", "cryptocurrency", "estate planning"],
+  icons: {
+    icon: "/favicon.ico",
+  },
   openGraph: {
     title: "CharonPass — Your digital estate, safely delivered.",
     description: "Crypto inheritance for non-technical wallet holders.",
     type: "website",
+    url: "https://charonpass.ashketing.com",
+    images: [
+      {
+        url: "/images/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "CharonPass — Your digital estate, safely delivered.",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CharonPass — Your digital estate, safely delivered.",
+    description: "Crypto inheritance for non-technical wallet holders.",
+    images: ["/images/og-image.png"],
   },
 }
 
